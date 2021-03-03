@@ -49,20 +49,21 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
+        $token = 'asd';
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+//        if (!$token = auth()->attempt($credentials)) {
+//            return response()->json(['error' => 'Unauthorized'], 401);
+//        }
+//
+//        $user = User::find(auth()->user()->getAuthIdentifier());
+//        $payload = [
+//            "user_id" => $user->user_id,
+//            "email" => $user->email,
+//            "name" => $user->name,
+//            "role_id" => $user->role_id,
+//        ];
 
-        $user = User::find(auth()->user()->getAuthIdentifier());
-        $payload = [
-            "user_id" => $user->user_id,
-            "email" => $user->email,
-            "name" => $user->name,
-            "role_id" => $user->role_id,
-        ];
-
-        return $this->responseWithToken(Response::success($payload), $token);
+        return $this->responseWithToken(Response::success($credentials), $token);
     }
 
     public function authorized(){
