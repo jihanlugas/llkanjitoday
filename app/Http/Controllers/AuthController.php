@@ -21,8 +21,8 @@ class AuthController extends Controller
     {
 //        $this->middleware('cors');
         $this->middleware('request');
-        $this->middleware('jwt', ['except' => ['login', 'logout', 'debug']]);
-        $this->middleware('auth:api', ['except' => ['login', 'logout', 'debug']]);
+        $this->middleware('jwt', ['except' => ['login', 'debug']]);
+        $this->middleware('auth:api', ['except' => ['login', 'debug']]);
     }
 
     public function debug(){
@@ -88,21 +88,6 @@ class AuthController extends Controller
                     'name' => 'Kanji Example',
                     'path' => '/kanjiexample',
                     'icon' => ['fas', 'user'],
-                ],
-                [
-                    'name' => 'Verb',
-                    'path' => '/verb',
-                    'icon' => ['fas', 'users'],
-                ],
-                [
-                    'name' => 'Noun',
-                    'path' => '/noun',
-                    'icon' => ['fas', 'project-diagram'],
-                ],
-                [
-                    'name' => 'Adjective',
-                    'path' => '/adjective',
-                    'icon' => ['fas', 'project-diagram'],
                 ],
             ];
         } else if($user->role_id == User::ROLE_MANDOR) {
