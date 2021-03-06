@@ -29,10 +29,15 @@ class PageController extends Controller
 
     public function kanji(){
         $query = Kanji::query();
-        $query->with(['kanjionyomis', 'kanjikunyomis', 'kanjimeans']);
+        $query->with(['kanjiyomis', 'kanjimeans']);
         $data = $this->paginate($query);
 
-        return $this->responseWithoutToken(Response::success($data));
+        $payload = [
+            'success' => true,
+            'data' => $data,
+        ];
+
+        return $this->response($payload, 200);
     }
 
     private function paginate(Builder $query){

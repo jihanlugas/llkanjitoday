@@ -21,33 +21,41 @@ class Kanji extends Model
 
     public static $createRules = [
         'kanjiId' => 'numeric',
-        'word' => 'required|unique:kanjis|string',
+        'word' => 'required|string|unique:kanjis',
         'strokes' => 'numeric',
-        'jlpt' => 'numeric',
-        'kanjionyomis' => 'array',
-        'kanjionyomis.*.kanjionyomiId' => 'numeric',
-        'kanjionyomis.*.kanjiId' => 'numeric',
-        'kanjionyomis.*.word' => 'string',
-        'kanjionyomis.*.type' => 'numeric',
-        'kanjikunyomis' => 'array',
-        'kanjikunyomis.*.kanjikunyomiId' => 'numeric',
-        'kanjikunyomis.*.kanjiId' => 'numeric',
-        'kanjikunyomis.*.word' => 'string',
-        'kanjikunyomis.*.type' => 'numeric',
+        'jlpt' => 'string',
+        'kanjiyomis' => 'array',
+        'kanjiyomis.*.kanjiyomiId' => 'numeric',
+        'kanjiyomis.*.kanjiId' => 'numeric',
+        'kanjiyomis.*.word' => 'string',
+        'kanjiyomis.*.type' => 'string',
         'kanjimeans' => 'array',
         'kanjimeans.*.kanjimeanId' => 'numeric',
         'kanjimeans.*.kanjiId' => 'numeric',
         'kanjimeans.*.mean' => 'string',
     ];
 
-    public function kanjionyomis()
-    {
-        return $this->hasMany(Kanjionyomi::class, 'kanji_id');
-    }
+    public static $updateRules = [
+        'kanjiId' => 'numeric',
+//        'word' => 'required|string|unique:kanjis',
+        'word' => 'required|string',
+        'strokes' => 'numeric',
+        'jlpt' => 'string',
+        'kanjiyomis' => 'array',
+        'kanjiyomis.*.kanjiyomiId' => 'numeric',
+        'kanjiyomis.*.kanjiId' => 'numeric',
+        'kanjiyomis.*.word' => 'string',
+        'kanjiyomis.*.type' => 'string',
+        'kanjimeans' => 'array',
+        'kanjimeans.*.kanjimeanId' => 'numeric',
+        'kanjimeans.*.kanjiId' => 'numeric',
+        'kanjimeans.*.mean' => 'string',
+    ];
 
-    public function kanjikunyomis()
+
+    public function kanjiyomis()
     {
-        return $this->hasMany(Kanjikunyomi::class, 'kanji_id');
+        return $this->hasMany(Kanjiyomi::class, 'kanji_id');
     }
 
     public function kanjimeans()

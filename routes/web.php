@@ -24,6 +24,7 @@ $router->group([
     $router->get('debug', 'AuthController@debug');
     $router->post('debug', 'AuthController@debug');
     $router->post('login', 'AuthController@login');
+    $router->get('authorized', 'AuthController@authorized');
     $router->post('authorized', 'AuthController@authorized');
     $router->post('me', 'AuthController@me');
     $router->get('logout', 'AuthController@logout');
@@ -32,14 +33,14 @@ $router->group([
     $router->group([
         'prefix' => 'page'
     ], function () use ($router){
-        $router->get('kanji', 'PageController@kanji');
         $router->post('kanji', 'PageController@kanji');
     });
 
     $router->group([
         'prefix' => 'kanji'
     ], function () use ($router){
-        $router->get('kanji', 'KanjiController@kanji');
+        $router->post('form', 'KanjiController@form');
         $router->post('store', 'KanjiController@store');
+        $router->put('update', 'KanjiController@update');
     });
 });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKanjionyomisTable extends Migration
+class CreateKanjiyomisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateKanjionyomisTable extends Migration
      */
     public function up()
     {
-        Schema::create('kanjionyomis', function (Blueprint $table) {
-            $table->id('kanjionyomi_id');
+        Schema::create('kanjiyomis', function (Blueprint $table) {
+            $table->id('kanjiyomi_id');
             $table->foreignId('kanji_id');
             $table->string('word')->default('');
             $table->string('type')->default('');
@@ -29,6 +29,6 @@ class CreateKanjionyomisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kanjionyomis');
+        Schema::dropIfExists('kanjiyomis');
     }
 }

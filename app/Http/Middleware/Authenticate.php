@@ -40,9 +40,10 @@ class Authenticate
         if ($this->auth->guard($guard)->guest()) {
             return response()
                 ->json([
-                'error' => true,
-                'message' => 'Unauthorized',
-                'logout' => true,
+                'errors' => [
+                    'message' => 'Unauthorized',
+                    'code' => 401,
+                ],
                 ], 401, [
                     'Accept' => 'application/json',
                     'Content-Type' => 'aplication/json',

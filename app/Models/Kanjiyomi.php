@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kanjionyomi extends Model
+class Kanjiyomi extends Model
 {
 
-    protected $primaryKey = 'kanjionyomi_id';
+    protected $primaryKey = 'kanjiyomi_id';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+    const TYPE_ONYOMI = "ONYOMI";
+    const TYPE_KUNYOMI = "KUNYOMI";
 
     protected $fillable = [
         'kanji_id', 'word', 'type'

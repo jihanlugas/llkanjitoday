@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Response {
     public static function success($payload = []){
@@ -10,6 +11,25 @@ class Response {
             "success" => true,
             "message" => "Request Success",
             "payload" => Helpers::keyCamel($payload)
+        ];
+        return $return;
+    }
+
+    public static function validation($payload = []){
+        $return = [
+            "success" => true,
+            "message" => "Request Success",
+            "validate" => Helpers::keyCamel($payload)
+        ];
+        return $return;
+    }
+
+
+    public static function submit($payload = []){
+        $return = [
+            "success" => true,
+            "message" => "Request Success",
+            "payload" => Helpers::keyCamel($payload),
         ];
         return $return;
     }

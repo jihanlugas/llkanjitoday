@@ -6,6 +6,7 @@ use App\Libraries\Helpers;
 use App\Libraries\Response;
 use App\Models\Kanji;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Cookie;
 
 
@@ -49,21 +50,22 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-        $token = 'asd';
 
-//        if (!$token = auth()->attempt($credentials)) {
-//            return response()->json(['error' => 'Unauthorized'], 401);
-//        }
-//
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['errors' => [
+                'message' => 'Unauthorized',
+                'code' => 401,
+            ]], 401);
+        }
+
 //        $user = User::find(auth()->user()->getAuthIdentifier());
-//        $payload = [
-//            "user_id" => $user->user_id,
-//            "email" => $user->email,
-//            "name" => $user->name,
-//            "role_id" => $user->role_id,
-//        ];
 
-        return $this->responseWithToken(Response::success($credentials), $token);
+        $payload = [
+            'success' => true,
+            'message' => 'Success Login'
+        ];
+
+        return $this->response($payload, 200, $token);
     }
 
     public function authorized(){
@@ -80,6 +82,11 @@ class AuthController extends Controller
                 [
                     'name' => 'Kanji',
                     'path' => '/kanji',
+                    'icon' => ['fas', 'user'],
+                ],
+                [
+                    'name' => 'Kanji Example',
+                    'path' => '/kanjiexample',
                     'icon' => ['fas', 'user'],
                 ],
                 [
@@ -121,7 +128,12 @@ class AuthController extends Controller
             ];
         }
 
-        return $this->responseWithoutToken(Response::success($authMenu));
+        $payload = [
+            'success' => true,
+            'data' => $authMenu
+        ];
+
+        return $this->response($payload, 200);
     }
 
     public function me()
