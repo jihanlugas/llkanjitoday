@@ -85,8 +85,8 @@ class AuthController extends Controller
                     'icon' => ['fas', 'user'],
                 ],
                 [
-                    'name' => 'Kanji Example',
-                    'path' => '/kanjiexample',
+                    'name' => 'Word',
+                    'path' => '/word',
                     'icon' => ['fas', 'user'],
                 ],
             ];

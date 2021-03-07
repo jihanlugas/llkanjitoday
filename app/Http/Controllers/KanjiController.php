@@ -30,7 +30,7 @@ class KanjiController extends Controller
     }
 
     public function form(Request $request){
-        $request = Helpers::keySnake($request->all());
+        $request = $request->all();
         $model = Kanji::find($request['kanji_id'])->with(['kanjiyomis', 'kanjimeans'])->first();
 
         $payload = [
@@ -43,7 +43,7 @@ class KanjiController extends Controller
     }
 
     public function store(Request $request){
-        $request = Helpers::keySnake($request->all());
+        $request = $request->all();
         $rules = Kanji::$createRules;
         $validator = Validator::make($request, $rules);
 
@@ -96,7 +96,7 @@ class KanjiController extends Controller
     }
 
     public function update(Request $request){
-        $request = Helpers::keySnake($request->all());
+        $request = $request->all();
         $kanji = Kanji::find($request['kanji_id']);
         if (empty($kanji)){
             // Data Not Found

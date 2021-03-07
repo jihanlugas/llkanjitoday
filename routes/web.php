@@ -38,6 +38,7 @@ $router->group([
         'prefix' => 'page'
     ], function () use ($router){
         $router->post('kanji', 'PageController@kanji');
+        $router->post('word', 'PageController@word');
     });
 
     $router->group([
@@ -46,5 +47,13 @@ $router->group([
         $router->post('form', 'KanjiController@form');
         $router->post('store', 'KanjiController@store');
         $router->put('update', 'KanjiController@update');
+    });
+
+    $router->group([
+        'prefix' => 'word'
+    ], function () use ($router){
+        $router->post('form', 'WordController@form');
+        $router->post('store', 'WordController@store');
+        $router->put('update', 'WordController@update');
     });
 });

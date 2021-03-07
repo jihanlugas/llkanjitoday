@@ -20,35 +20,35 @@ class Kanji extends Model
     ];
 
     public static $createRules = [
-        'kanjiId' => 'numeric',
+        'kanji_id' => 'numeric',
         'word' => 'required|string|unique:kanjis',
         'strokes' => 'numeric',
         'jlpt' => 'string',
         'kanjiyomis' => 'array',
-        'kanjiyomis.*.kanjiyomiId' => 'numeric',
-        'kanjiyomis.*.kanjiId' => 'numeric',
+        'kanjiyomis.*.kanjiyomi_id' => 'numeric',
+        'kanjiyomis.*.kanji_id' => 'numeric',
         'kanjiyomis.*.word' => 'string',
         'kanjiyomis.*.type' => 'string',
         'kanjimeans' => 'array',
-        'kanjimeans.*.kanjimeanId' => 'numeric',
-        'kanjimeans.*.kanjiId' => 'numeric',
+        'kanjimeans.*.kanjimean_id' => 'numeric',
+        'kanjimeans.*.kanji_id' => 'numeric',
         'kanjimeans.*.mean' => 'string',
     ];
 
     public static $updateRules = [
-        'kanjiId' => 'numeric',
+        'kanji_id' => 'numeric',
 //        'word' => 'required|string|unique:kanjis',
         'word' => 'required|string',
         'strokes' => 'numeric',
         'jlpt' => 'string',
         'kanjiyomis' => 'array',
-        'kanjiyomis.*.kanjiyomiId' => 'numeric',
-        'kanjiyomis.*.kanjiId' => 'numeric',
+        'kanjiyomis.*.kanjiyomi_id' => 'numeric',
+        'kanjiyomis.*.kanji_id' => 'numeric',
         'kanjiyomis.*.word' => 'string',
         'kanjiyomis.*.type' => 'string',
         'kanjimeans' => 'array',
-        'kanjimeans.*.kanjimeanId' => 'numeric',
-        'kanjimeans.*.kanjiId' => 'numeric',
+        'kanjimeans.*.kanjimean_id' => 'numeric',
+        'kanjimeans.*.kanji_id' => 'numeric',
         'kanjimeans.*.mean' => 'string',
     ];
 
