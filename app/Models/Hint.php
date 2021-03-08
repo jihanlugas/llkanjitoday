@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Hint extends Model
+{
+
+    protected $primaryKey = 'hint_id';
+
+    protected $fillable = [
+        'hint'
+    ];
+
+    public static $createRules = [
+        'hint_id' => 'numeric',
+        'hint' => 'string',
+    ];
+
+    public static $updateRules = [
+        'hint_id' => 'numeric',
+        'hint' => 'string',
+    ];
+
+    public function words()
+    {
+        return $this->belongsToMany(Word::class, 'wordhints');
+    }
+}

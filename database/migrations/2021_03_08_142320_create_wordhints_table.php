@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWordsTable extends Migration
+class CreateWordhintsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateWordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('words', function (Blueprint $table) {
-            $table->id('word_id');
-            $table->string('word')->default('');
-            $table->string('mean')->default('');
-            $table->string('kana')->default('');
+        Schema::create('wordhints', function (Blueprint $table) {
+            $table->foreignId('word_id');
+            $table->foreignId('hint_id');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateWordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('words');
+        Schema::dropIfExists('wordhints');
     }
 }

@@ -29,7 +29,7 @@ class WordController extends Controller
 
     public function form(Request $request){
         $request = $request->all();
-        $model = Word::find($request['word_id'])->first();
+        $model = Word::where('word_id', '=', $request['word_id'])->first();
 
         $payload = [
             'success' => true,
@@ -62,7 +62,6 @@ class WordController extends Controller
                 $word->word = $request['word'];
                 $word->kana = $request['kana'];
                 $word->mean = $request['mean'];
-                $word->hint = $request['hint'];
                 $word->save();
 
                 $payload = [
@@ -104,7 +103,6 @@ class WordController extends Controller
                     $word->word = $request['word'];
                     $word->kana = $request['kana'];
                     $word->mean = $request['mean'];
-                    $word->hint = $request['hint'];
                     $word->save();
 
                     $payload = [

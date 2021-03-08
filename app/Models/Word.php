@@ -10,7 +10,7 @@ class Word extends Model
     protected $primaryKey = 'word_id';
 
     protected $fillable = [
-        'word', 'mean', 'description'
+        'word', 'kana', 'mean'
     ];
 
     public static $createRules = [
@@ -18,7 +18,6 @@ class Word extends Model
         'word' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
-        'hint' => 'string',
     ];
 
     public static $updateRules = [
@@ -26,6 +25,10 @@ class Word extends Model
         'word' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
-        'hint' => 'string',
     ];
+
+    public function hints()
+    {
+        return $this->belongsToMany(Hint::class, 'wordhints');
+    }
 }

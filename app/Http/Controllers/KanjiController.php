@@ -31,8 +31,7 @@ class KanjiController extends Controller
 
     public function form(Request $request){
         $request = $request->all();
-        $model = Kanji::find($request['kanji_id'])->with(['kanjiyomis', 'kanjimeans'])->first();
-
+        $model = Kanji::where('kanji_id', '=', $request['kanji_id'])->with(['kanjiyomis', 'kanjimeans'])->first();
         $payload = [
             'success' => true,
             'data' => $model
