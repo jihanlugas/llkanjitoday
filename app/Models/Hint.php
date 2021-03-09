@@ -25,6 +25,6 @@ class Hint extends Model
 
     public function words()
     {
-        return $this->belongsToMany(Word::class, 'wordhints');
+        return $this->belongsToMany(Word::class, 'wordhints', 'hint_id', 'word_id');
     }
 }

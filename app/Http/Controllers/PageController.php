@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Word;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use MongoDB\Driver\Query;
 use Symfony\Component\HttpFoundation\Cookie;
 
@@ -28,10 +29,11 @@ class PageController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function kanji(){
+    public function kanji(Request $request){
+        $request = $request->all();
         $query = Kanji::query();
         $query->with(['kanjiyomis', 'kanjimeans']);
-        $data = $this->paginate($query);
+        $data = $this->paginate($query, $request['page']);
 
         $payload = [
             'success' => true,
@@ -41,10 +43,12 @@ class PageController extends Controller
         return $this->response($payload, 200);
     }
 
-    public function word(){
+    public function word(Request $request){
+        $request = $request->all();
         $query = Word::query();
+        $query->with(['hints']);
 //        $query->with(['kanjiyomis', 'kanjimeans']);
-        $data = $this->paginate($query);
+        $data = $this->paginate($query, $request['page']);
 
         $payload = [
             'success' => true,
@@ -54,8 +58,11 @@ class PageController extends Controller
         return $this->response($payload, 200);
     }
 
-    private function paginate(Builder $query){
-        $data = $query->paginate(10);
+    private function paginate(Builder $query, $page = null){
+        $columns = ['*'];
+        $pageName = 'page';
+
+        $data = $query->paginate(10, $columns, $pageName, $page);
 
         return $data;
 

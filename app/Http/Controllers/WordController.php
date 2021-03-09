@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Libraries\Helpers;
 use App\Libraries\Response;
+use App\Models\Hint;
 use App\Models\Word;
+use App\Models\Wordhint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,11 +27,12 @@ class WordController extends Controller
         $this->middleware('request');
         $this->middleware('jwt');
         $this->middleware('auth:api');
+//        $this->middleware('auth:api', ['except' => ['form']]);
     }
 
     public function form(Request $request){
         $request = $request->all();
-        $model = Word::where('word_id', '=', $request['word_id'])->first();
+        $model = Word::where('word_id', '=', $request['word_id'])->with(['hints'])->first();
 
         $payload = [
             'success' => true,
@@ -58,11 +61,34 @@ class WordController extends Controller
         } else {
             DB::beginTransaction();
             try {
-                $word = new Word();
-                $word->word = $request['word'];
-                $word->kana = $request['kana'];
-                $word->mean = $request['mean'];
-                $word->save();
+                $Word = new Word();
+                $Word->word = $request['word'];
+                $Word->kana = $request['kana'];
+                $Word->mean = $request['mean'];
+                $Word->save();
+
+                foreach ($request['hints'] as $key => $requesthint){
+                    if ($requesthint['hint_id']){
+                        $Hint = Hint::find($requesthint['hint']);
+                    } else {
+                        $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
+                        if (empty($Hint)){
+                            $Hint = new Hint();
+                        }
+                    }
+                    $Hint->hint = $requesthint['hint'];
+                    $Hint->save();
+
+                    $Wordhint = Wordhint::where('word_id', '=', $Word->word_id)
+                                    ->where('hint_id', '=', $Hint->hint_id)->first();
+
+                    if (empty($Wordhint)){
+                        $Wordhint = new Wordhint();
+                        $Wordhint->word_id = $Word->word_id;
+                        $Wordhint->hint_id = $Hint->hint_id;
+                        $Wordhint->save();
+                    }
+                }
 
                 $payload = [
                     'success' => true,
@@ -80,12 +106,12 @@ class WordController extends Controller
 
     public function update(Request $request){
         $request = $request->all();
-        $word = Word::find($request['word_id']);
-        if (empty($word)){
+        $Word = Word::find($request['word_id']);
+        if (empty($Word)){
             // Data Not Found
         } else {
             $rules = Word::$updateRules;
-//            $rules['word'] = $rules['word'] . ',word,' . $word->kanji_id;
+//            $rules['word'] = $rules['word'] . ',word,' . $Word->kanji_id;
             $validator = Validator::make($request, $rules);
             if ($validator->errors()->messages()){
                 $payload = [
@@ -100,10 +126,40 @@ class WordController extends Controller
             } else {
                 DB::beginTransaction();
                 try {
-                    $word->word = $request['word'];
-                    $word->kana = $request['kana'];
-                    $word->mean = $request['mean'];
-                    $word->save();
+                    $Word->word = $request['word'];
+                    $Word->kana = $request['kana'];
+                    $Word->mean = $request['mean'];
+                    $Word->save();
+
+                    $noremove_wordhint = [];
+                    foreach ($request['hints'] as $key => $requesthint){
+                        if ($requesthint['hint_id']){
+                            $Hint = Hint::find($requesthint['hint_id']);
+                        } else {
+                            $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
+                            if (empty($Hint)){
+                                $Hint = new Hint();
+                            }
+                        }
+                        $Hint->hint = $requesthint['hint'];
+                        $Hint->save();
+
+                        $Wordhint = Wordhint::where('word_id', '=', $Word->word_id)
+                            ->where('hint_id', '=', $Hint->hint_id)->first();
+
+                        if (empty($Wordhint)){
+                            $Wordhint = new Wordhint();
+                            $Wordhint->word_id = $Word->word_id;
+                            $Wordhint->hint_id = $Hint->hint_id;
+                            $Wordhint->save();
+                        }
+
+                        array_push($noremove_wordhint, $Wordhint->hint_id);
+                    }
+
+                    Wordhint::where('word_id', '=', $Word->word_id)
+                        ->whereNotIn('hint_id', $noremove_wordhint)
+                        ->delete();
 
                     $payload = [
                         'success' => true,
