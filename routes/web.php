@@ -39,6 +39,7 @@ $router->group([
     ], function () use ($router){
         $router->post('kanji', 'PageController@kanji');
         $router->post('word', 'PageController@word');
+        $router->post('vocabulary', 'PageController@vocabulary');
     });
 
     $router->group([
@@ -55,5 +56,13 @@ $router->group([
         $router->post('form', 'WordController@form');
         $router->post('store', 'WordController@store');
         $router->put('update', 'WordController@update');
+    });
+
+    $router->group([
+        'prefix' => 'vocabulary'
+    ], function () use ($router){
+        $router->post('form', 'VocabularyController@form');
+        $router->post('store', 'VocabularyController@store');
+        $router->put('update', 'VocabularyController@update');
     });
 });

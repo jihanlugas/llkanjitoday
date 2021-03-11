@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['errors' => [
-                'message' => 'Unauthorized',
+                'message' => 'Invalid Email or Password',
                 'code' => 401,
             ]], 401);
         }
@@ -82,6 +82,11 @@ class AuthController extends Controller
                 [
                     'name' => 'Kanji',
                     'path' => '/kanji',
+                    'icon' => ['fas', 'user'],
+                ],
+                [
+                    'name' => 'Vocabulary',
+                    'path' => '/vocabulary',
                     'icon' => ['fas', 'user'],
                 ],
                 [

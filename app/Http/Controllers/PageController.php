@@ -6,6 +6,7 @@ use App\Libraries\Helpers;
 use App\Libraries\Response;
 use App\Models\Kanji;
 use App\Models\User;
+use App\Models\Vocabulary;
 use App\Models\Word;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,7 +34,7 @@ class PageController extends Controller
         $request = $request->all();
         $query = Kanji::query();
         $query->with(['kanjiyomis', 'kanjimeans']);
-        $data = $this->paginate($query, $request['page']);
+        $data = $this->paginate($query, $request['per_page'] ,$request['page']);
 
         $payload = [
             'success' => true,
@@ -46,9 +47,8 @@ class PageController extends Controller
     public function word(Request $request){
         $request = $request->all();
         $query = Word::query();
-        $query->with(['hints']);
-//        $query->with(['kanjiyomis', 'kanjimeans']);
-        $data = $this->paginate($query, $request['page']);
+//        $query->with(['hints']);
+        $data = $this->paginate($query, $request['per_page'] ,$request['page']);
 
         $payload = [
             'success' => true,
@@ -58,11 +58,25 @@ class PageController extends Controller
         return $this->response($payload, 200);
     }
 
-    private function paginate(Builder $query, $page = null){
+    public function vocabulary(Request $request){
+        $request = $request->all();
+        $query = Vocabulary::query();
+//        $query->with(['hints']);
+        $data = $this->paginate($query, $request['per_page'] ,$request['page']);
+
+        $payload = [
+            'success' => true,
+            'data' => $data,
+        ];
+
+        return $this->response($payload, 200);
+    }
+
+    private function paginate(Builder $query, $perPage = 10, $page = null){
         $columns = ['*'];
         $pageName = 'page';
 
-        $data = $query->paginate(10, $columns, $pageName, $page);
+        $data = $query->paginate($perPage, $columns, $pageName, $page);
 
         return $data;
 
