@@ -24,7 +24,7 @@ class VocabularyController extends Controller
 //        $this->middleware('cors');
         $this->middleware('request');
         $this->middleware('jwt');
-//        $this->middleware('auth:api');
+        $this->middleware('auth:api');
 //        $this->middleware('auth:api', ['except' => ['form']]);
     }
 
@@ -63,6 +63,7 @@ class VocabularyController extends Controller
                 $Vocabulary->vocabulary = $request['vocabulary'];
                 $Vocabulary->kana = $request['kana'];
                 $Vocabulary->mean = $request['mean'];
+                $Vocabulary->notes = $request['notes'];
                 $Vocabulary->save();
 
 //                foreach ($request['hints'] as $key => $requesthint){
@@ -127,6 +128,7 @@ class VocabularyController extends Controller
                     $Vocabulary->vocabulary = $request['vocabulary'];
                     $Vocabulary->kana = $request['kana'];
                     $Vocabulary->mean = $request['mean'];
+                    $Vocabulary->notes = $request['notes'];
                     $Vocabulary->save();
 
 //                    $noremove_vocabularyhint = [];

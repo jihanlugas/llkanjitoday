@@ -10,7 +10,7 @@ class Vocabulary extends Model
     protected $primaryKey = 'vocabulary_id';
 
     protected $fillable = [
-        'vocabulary', 'kana', 'mean'
+        'vocabulary', 'kana', 'mean', 'notes'
     ];
 
     public static $createRules = [
@@ -18,6 +18,7 @@ class Vocabulary extends Model
         'vocabulary' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
+        'notes' => 'string',
     ];
 
     public static $updateRules = [
@@ -25,6 +26,7 @@ class Vocabulary extends Model
         'vocabulary' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
+        'notes' => 'string',
     ];
 
     public function words()

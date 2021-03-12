@@ -18,6 +18,7 @@ class CreateVocabularysTable extends Migration
             $table->string('vocabulary')->default('');
             $table->string('mean')->default('');
             $table->string('kana')->default('');
+            $table->string('notes')->default('');
             $table->timestamps();
         });
     }
