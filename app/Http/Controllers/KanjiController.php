@@ -24,7 +24,7 @@ class KanjiController extends Controller
     public function __construct()
     {
 //        $this->middleware('cors');
-        $this->middleware('request');
+//        $this->middleware('request');
         $this->middleware('jwt');
         $this->middleware('auth:api');
     }

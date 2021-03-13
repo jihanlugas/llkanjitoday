@@ -17,7 +17,7 @@ class Controller extends BaseController
                 'Access-Control-Allow-Origin' => '*',
                 'Access-Control-Allow-Credentials' => true,
             ])
-            ->withCookie(Cookie::create('Authorization', 'Bearer ' . $token, time() * (60 * env('JWT_TTL', 5))))
+            ->withCookie(Cookie::create('Authorization', 'Bearer ' . $token, time() * (60 * env('JWT_TTL', 60))))
             ;
         } else {
             return response()->json($data, $http_code, [
