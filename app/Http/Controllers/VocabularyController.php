@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Libraries\Helpers;
 use App\Libraries\Response;
+use App\Models\Hint;
 use App\Models\Vocabulary;
+use App\Models\Vocabularyhint;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +32,7 @@ class VocabularyController extends Controller
 
     public function form(Request $request){
         $request = $request->all();
-        $model = Vocabulary::where('vocabulary_id', '=', $request['vocabulary_id'])->with(['words'])->first();
+        $model = Vocabulary::where('vocabulary_id', '=', $request['vocabulary_id'])->with(['words', 'hints'])->first();
 
         $payload = [
             'success' => true,
@@ -38,7 +40,6 @@ class VocabularyController extends Controller
         ];
 
         return $this->response($payload, 200);
-//        return $this->responseWithoutToken(Response::success($model));
     }
 
     public function store(Request $request){
@@ -55,7 +56,6 @@ class VocabularyController extends Controller
                 ]
             ];
             return $this->response($payload, 400);
-//            return $this->responseWithoutToken(Response::validation($validator->errors()->messages()));
         } else {
             DB::beginTransaction();
             try {
@@ -66,28 +66,28 @@ class VocabularyController extends Controller
                 $Vocabulary->notes = $request['notes'];
                 $Vocabulary->save();
 
-//                foreach ($request['hints'] as $key => $requesthint){
-//                    if ($requesthint['hint_id']){
-//                        $Hint = Hint::find($requesthint['hint']);
-//                    } else {
-//                        $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
-//                        if (empty($Hint)){
-//                            $Hint = new Hint();
-//                        }
-//                    }
-//                    $Hint->hint = $requesthint['hint'];
-//                    $Hint->save();
-//
-//                    $Vocabularyhint = Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
-//                                    ->where('hint_id', '=', $Hint->hint_id)->first();
-//
-//                    if (empty($Vocabularyhint)){
-//                        $Vocabularyhint = new Vocabularyhint();
-//                        $Vocabularyhint->vocabulary_id = $Vocabulary->vocabulary_id;
-//                        $Vocabularyhint->hint_id = $Hint->hint_id;
-//                        $Vocabularyhint->save();
-//                    }
-//                }
+                foreach ($request['hints'] as $key => $requesthint){
+                    if ($requesthint['hint_id']){
+                        $Hint = Hint::find($requesthint['hint_id']);
+                    } else {
+                        $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
+                        if (empty($Hint)){
+                            $Hint = new Hint();
+                        }
+                    }
+                    $Hint->hint = $requesthint['hint'];
+                    $Hint->save();
+
+                    $Vocabularyhint = Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
+                        ->where('hint_id', '=', $Hint->hint_id)->first();
+
+                    if (empty($Vocabularyhint)){
+                        $Vocabularyhint = new Vocabularyhint();
+                        $Vocabularyhint->vocabulary_id = $Vocabulary->vocabulary_id;
+                        $Vocabularyhint->hint_id = $Hint->hint_id;
+                        $Vocabularyhint->save();
+                    }
+                }
 
                 $payload = [
                     'success' => true,
@@ -131,35 +131,37 @@ class VocabularyController extends Controller
                     $Vocabulary->notes = $request['notes'];
                     $Vocabulary->save();
 
-//                    $noremove_vocabularyhint = [];
-//                    foreach ($request['hints'] as $key => $requesthint){
-//                        if ($requesthint['hint_id']){
-//                            $Hint = Hint::find($requesthint['hint_id']);
-//                        } else {
-//                            $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
-//                            if (empty($Hint)){
-//                                $Hint = new Hint();
-//                            }
-//                        }
-//                        $Hint->hint = $requesthint['hint'];
-//                        $Hint->save();
-//
-//                        $Vocabularyhint = Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
-//                            ->where('hint_id', '=', $Hint->hint_id)->first();
-//
-//                        if (empty($Vocabularyhint)){
-//                            $Vocabularyhint = new Vocabularyhint();
-//                            $Vocabularyhint->vocabulary_id = $Vocabulary->vocabulary_id;
-//                            $Vocabularyhint->hint_id = $Hint->hint_id;
-//                            $Vocabularyhint->save();
-//                        }
-//
-//                        array_push($noremove_vocabularyhint, $Vocabularyhint->hint_id);
-//                    }
-//
-//                    Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
-//                        ->whereNotIn('hint_id', $noremove_vocabularyhint)
-//                        ->delete();
+                    $noremove_vocabularyhint = [];
+
+                    foreach ($request['hints'] as $key => $requesthint){
+                        if ($requesthint['hint_id']){
+                            $Hint = Hint::find($requesthint['hint_id']);
+                        } else {
+                            $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
+                            if (empty($Hint)){
+                                $Hint = new Hint();
+                            }
+                        }
+
+                        $Hint->hint = $requesthint['hint'];
+                        $Hint->save();
+
+                        $Vocabularyhint = Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
+                            ->where('hint_id', '=', $Hint->hint_id)->first();
+
+
+                        if (empty($Vocabularyhint)){
+                            $Vocabularyhint = new Vocabularyhint();
+                            $Vocabularyhint->vocabulary_id = $Vocabulary->vocabulary_id;
+                            $Vocabularyhint->hint_id = $Hint->hint_id;
+                            $Vocabularyhint->save();
+                        }
+                        array_push($noremove_vocabularyhint, $Vocabulary->vocabulary_id);
+                    }
+
+                    Vocabularyhint::where('vocabulary_id', '=', $Vocabulary->vocabulary_id)
+                        ->whereNotIn('hint_id', $noremove_vocabularyhint)
+                        ->delete();
 
                     $payload = [
                         'success' => true,

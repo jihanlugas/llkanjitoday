@@ -27,4 +27,9 @@ class Hint extends Model
     {
         return $this->belongsToMany(Word::class, 'wordhints', 'hint_id', 'word_id');
     }
+
+    public function vocabulary()
+    {
+        return $this->belongsToMany(Vocabulary::class, 'vocabularyhints', 'hint_id', 'vocabulary_id');
+    }
 }

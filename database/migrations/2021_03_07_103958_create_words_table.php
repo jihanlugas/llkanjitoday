@@ -18,6 +18,7 @@ class CreateWordsTable extends Migration
             $table->string('word')->default('');
             $table->string('mean')->default('');
             $table->string('kana')->default('');
+            $table->text('notes');
             $table->timestamps();
         });
     }

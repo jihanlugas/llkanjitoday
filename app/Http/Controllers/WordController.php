@@ -65,11 +65,12 @@ class WordController extends Controller
                 $Word->word = $request['word'];
                 $Word->kana = $request['kana'];
                 $Word->mean = $request['mean'];
+                $Word->notes = $request['notes'];
                 $Word->save();
 
                 foreach ($request['hints'] as $key => $requesthint){
                     if ($requesthint['hint_id']){
-                        $Hint = Hint::find($requesthint['hint']);
+                        $Hint = Hint::find($requesthint['hint_id']);
                     } else {
                         $Hint = Hint::where('hint', '=', $requesthint['hint'])->first();
                         if (empty($Hint)){
@@ -129,6 +130,7 @@ class WordController extends Controller
                     $Word->word = $request['word'];
                     $Word->kana = $request['kana'];
                     $Word->mean = $request['mean'];
+                    $Word->notes = $request['notes'];
                     $Word->save();
 
                     $noremove_wordhint = [];

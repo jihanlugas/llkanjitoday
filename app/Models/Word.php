@@ -10,7 +10,7 @@ class Word extends Model
     protected $primaryKey = 'word_id';
 
     protected $fillable = [
-        'word', 'kana', 'mean'
+        'word', 'kana', 'mean', 'notes'
     ];
 
     public static $createRules = [
@@ -18,6 +18,7 @@ class Word extends Model
         'word' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
+        'notes' => 'string',
     ];
 
     public static $updateRules = [
@@ -25,6 +26,7 @@ class Word extends Model
         'word' => 'required|string',
         'kana' => 'string',
         'mean' => 'string',
+        'notes' => 'string',
     ];
 
     public function hints()

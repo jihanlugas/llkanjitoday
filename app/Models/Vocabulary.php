@@ -33,4 +33,9 @@ class Vocabulary extends Model
     {
         return $this->belongsToMany(Word::class, 'wordvocabularys', 'vocabulary_id', 'word_id');
     }
+
+    public function hints()
+    {
+        return $this->belongsToMany(Hint::class, 'vocabularyhints', 'vocabulary_id', 'hint_id');
+    }
 }

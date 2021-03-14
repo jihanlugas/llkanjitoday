@@ -47,7 +47,7 @@ class PageController extends Controller
     public function word(Request $request){
         $request = $request->all();
         $query = Word::query();
-//        $query->with(['hints']);
+        $query->with(['hints']);
         $data = $this->paginate($query, $request['per_page'] ,$request['page']);
 
         $payload = [
@@ -61,7 +61,7 @@ class PageController extends Controller
     public function vocabulary(Request $request){
         $request = $request->all();
         $query = Vocabulary::query();
-//        $query->with(['hints']);
+        $query->with(['hints']);
         $data = $this->paginate($query, $request['per_page'] ,$request['page']);
 
         $payload = [

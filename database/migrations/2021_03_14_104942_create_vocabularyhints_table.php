@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVocabularysTable extends Migration
+class CreateVocabularyhintsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateVocabularysTable extends Migration
      */
     public function up()
     {
-        Schema::create('vocabularys', function (Blueprint $table) {
-            $table->id('vocabulary_id');
-            $table->string('vocabulary')->default('');
-            $table->string('mean')->default('');
-            $table->string('kana')->default('');
-            $table->text('notes');
+        Schema::create('vocabularyhints', function (Blueprint $table) {
+            $table->foreignId('vocabulary_id');
+            $table->foreignId('hint_id');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateVocabularysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vocabularys');
+        Schema::dropIfExists('vocabularyhints');
     }
 }
